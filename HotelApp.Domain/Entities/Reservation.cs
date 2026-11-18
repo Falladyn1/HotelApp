@@ -9,8 +9,7 @@ namespace HotelApp.Domain.Entities
         public int Id { get; set; }
         public int RoomId { get; set; }
         public Room Room { get; set; } = default!;
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
+        public DateRange TimeFrame { get; set; } = default!;
         public bool IsConfirmed { get; set; }
     }
 }

@@ -4,6 +4,7 @@ namespace HotelApp.Application.Services
 {
     public interface IReservationService
     {
-        Task CreateReservation(Reservation reservation);
+        Task<IReadOnlyList<Room>> GetRoomsAsync();
+        Task CreateBookingAsync(Booking booking);
     }
 }

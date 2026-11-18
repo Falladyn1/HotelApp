@@ -12,9 +12,14 @@ namespace HotelApp.Application.Services
         {
             _hotelReservationRepository = hotelReservationRepository;
         }
-        public async Task CreateReservation(Domain.Entities.Reservation reservation)
+        public Task<IReadOnlyList<Domain.Entities.Room>> GetRoomsAsync()
         {
-            await _hotelReservationRepository.CreateReservation(reservation);
+            return _hotelReservationRepository.GetRoomsAsync();
+        }
+
+        public Task CreateBookingAsync(Domain.Entities.Booking booking)
+        {
+            return _hotelReservationRepository.CreateBookingAsync(booking);
         }
     }
 }

@@ -6,6 +6,7 @@ namespace HotelApp.Domain.Interfaces
 {
     public interface IReservationRepository
     {
-        Task CreateReservation(Domain.Entities.Reservation reservation);
+        Task<IReadOnlyList<Domain.Entities.Room>> GetRoomsAsync();
+        Task CreateBookingAsync(Domain.Entities.Booking booking);
     }
 }

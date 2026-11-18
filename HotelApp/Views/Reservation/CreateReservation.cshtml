@@ -1,0 +1,78 @@
+@model HotelApp.Models.CreateReservationViewModel
+
+@{
+    ViewData["Title"] = "Group booking";
+}
+
+<h1>Group booking</h1>
+<p>Choose cottages for one shared stay. Guest count is for the entire booking.</p>
+
+@if (TempData["BookingSubmitted"] is true)
+{
+    <div class="alert alert-success" role="status">Your booking request has been submitted.</div>
+}
+
+<form asp-action="CreateReservation" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="GuestName" class="form-label"></label>
+        <input asp-for="GuestName" class="form-control" />
+        <span asp-validation-for="GuestName" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="GuestEmail" class="form-label"></label>
+        <input asp-for="GuestEmail" class="form-control" />
+        <span asp-validation-for="GuestEmail" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="GuestPhone" class="form-label"></label>
+        <input asp-for="GuestPhone" class="form-control" />
+        <span asp-validation-for="GuestPhone" class="text-danger"></span>
+    </div>
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <label asp-for="StartDate" class="form-label"></label>
+            <input asp-for="StartDate" type="date" class="form-control" />
+            <span asp-validation-for="StartDate" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="EndDate" class="form-label"></label>
+            <input asp-for="EndDate" type="date" class="form-control" />
+            <span asp-validation-for="EndDate" class="text-danger"></span>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label asp-for="TotalGuests" class="form-label"></label>
+            <input asp-for="TotalGuests" class="form-control" min="1" />
+            <span asp-validation-for="TotalGuests" class="text-danger"></span>
+        </div>
+    </div>
+
+    <fieldset class="mb-3">
+        <legend>Select cottages</legend>
+        <span asp-validation-for="SelectedRoomIds" class="text-danger"></span>
+        @if (Model.Rooms.Count == 0)
+        {
+            <p>No cottages are currently available.</p>
+        }
+        @foreach (var room in Model.Rooms)
+        {
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="SelectedRoomIds" value="@room.Id" checked="@room.IsSelected" id="room-@room.Id" />
+                <label class="form-check-label" for="room-@room.Id">
+                    <strong>@room.Name</strong> — capacity @room.Capacity, @room.PricePerNight.ToString("C") per night
+                    @if (!string.IsNullOrWhiteSpace(room.Description))
+                    {
+                        <span> (@room.Description)</span>
+                    }
+                </label>
+            </div>
+        }
+    </fieldset>
+
+    <button type="submit" class="btn btn-primary">Submit booking</button>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

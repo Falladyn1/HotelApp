@@ -1,6 +1,7 @@
 ﻿using HotelApp.Domain.Entities;
 using HotelApp.Domain.Interfaces;
 using HotelApp.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,9 +15,17 @@ namespace HotelApp.Infrastructure.Repositories
         {
             _dbContext = dbContext;
         }
-        public async Task CreateReservation(Reservation reservation)
+        public async Task<IReadOnlyList<Room>> GetRoomsAsync()
         {
-            _dbContext.Add(reservation);
+            return await _dbContext.Rooms
+                .AsNoTracking()
+                .OrderBy(room => room.Name)
+                .ToListAsync();
+        }
+
+        public async Task CreateBookingAsync(Booking booking)
+        {
+            _dbContext.Bookings.Add(booking);
             await _dbContext.SaveChangesAsync();
         }
     }

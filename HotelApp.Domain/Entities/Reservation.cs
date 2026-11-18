@@ -9,7 +9,7 @@ namespace HotelApp.Domain.Entities
         public int Id { get; set; }
         public int RoomId { get; set; }
         public Room Room { get; set; } = default!;
-        public DateRange TimeFrame { get; set; } = default!;
-        public bool IsConfirmed { get; set; }
+        public int BookingId { get; set; }
+        public Booking Booking { get; set; } = default!;
     }
 }

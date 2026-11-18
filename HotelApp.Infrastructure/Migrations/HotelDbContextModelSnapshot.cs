@@ -22,6 +22,39 @@ namespace HotelApp.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("HotelApp.Domain.Entities.Booking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("GuestEmail")
+                        .IsRequired()
+                        .HasMaxLength(320)
+                        .HasColumnType("nvarchar(320)");
+
+                    b.Property<string>("GuestName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("GuestPhone")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TotalGuests")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Bookings");
+                });
+
             modelBuilder.Entity("HotelApp.Domain.Entities.Reservation", b =>
                 {
                     b.Property<int>("Id")
@@ -30,13 +63,15 @@ namespace HotelApp.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsConfirmed")
-                        .HasColumnType("bit");
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BookingId");
 
                     b.HasIndex("RoomId");
 
@@ -67,20 +102,14 @@ namespace HotelApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Room");
+                    b.ToTable("Room", (string)null);
                 });
 
-            modelBuilder.Entity("HotelApp.Domain.Entities.Reservation", b =>
+            modelBuilder.Entity("HotelApp.Domain.Entities.Booking", b =>
                 {
-                    b.HasOne("HotelApp.Domain.Entities.Room", "Room")
-                        .WithMany()
-                        .HasForeignKey("RoomId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.OwnsOne("HotelApp.Domain.Entities.DateRange", "TimeFrame", b1 =>
                         {
-                            b1.Property<int>("ReservationId")
+                            b1.Property<int>("BookingId")
                                 .HasColumnType("int");
 
                             b1.Property<DateTime>("EndDate")
@@ -89,18 +118,40 @@ namespace HotelApp.Infrastructure.Migrations
                             b1.Property<DateTime>("StartDate")
                                 .HasColumnType("datetime2");
 
-                            b1.HasKey("ReservationId");
+                            b1.HasKey("BookingId");
 
-                            b1.ToTable("Reservations");
+                            b1.ToTable("Bookings");
 
                             b1.WithOwner()
-                                .HasForeignKey("ReservationId");
+                                .HasForeignKey("BookingId");
                         });
-
-                    b.Navigation("Room");
 
                     b.Navigation("TimeFrame")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HotelApp.Domain.Entities.Reservation", b =>
+                {
+                    b.HasOne("HotelApp.Domain.Entities.Booking", "Booking")
+                        .WithMany("Reservations")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HotelApp.Domain.Entities.Room", "Room")
+                        .WithMany()
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Booking");
+
+                    b.Navigation("Room");
+                });
+
+            modelBuilder.Entity("HotelApp.Domain.Entities.Booking", b =>
+                {
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

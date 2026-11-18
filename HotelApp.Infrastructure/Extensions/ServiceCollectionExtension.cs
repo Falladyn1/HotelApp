@@ -1,4 +1,6 @@
-﻿using HotelApp.Infrastructure.Persistence;
+﻿using HotelApp.Domain.Interfaces;
+using HotelApp.Infrastructure.Persistence;
+using HotelApp.Infrastructure.Repositories;
 using HotelApp.Infrastructure.Seeders;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -13,9 +15,12 @@ namespace HotelApp.Infrastructure.Extensions
     {
         public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDbContext<HotelDbContext>(options => options.UseSqlServer(configuration.GetConnectionString("HotelApp")));
+            services.AddDbContext<HotelDbContext>(options => options.UseSqlServer(
+                configuration.GetConnectionString("HotelApp")));
 
             services.AddScoped<HotelRoomSeeder>();
+
+            services.AddScoped<IReservationRepository, ReservationRepository>();
         }
     }
 }

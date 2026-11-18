@@ -1,5 +1,6 @@
 ﻿using HotelApp.Domain.Entities;
 using HotelApp.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -29,7 +30,7 @@ namespace HotelApp.Infrastructure.Seeders
         {
             if (await _dbContext.Database.CanConnectAsync())
             {
-                if (!_dbContext.Rooms.Any())
+                if (! await _dbContext.Rooms.AnyAsync())
                 {
 
                     _dbContext.Rooms.AddRange(RoomsCreator(10));

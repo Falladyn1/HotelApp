@@ -22,6 +22,36 @@ namespace HotelApp.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("HotelApp.Domain.Entities.Booking", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("GuestEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GuestName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GuestPhone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TotalGuests")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Bookings");
+                });
+
             modelBuilder.Entity("HotelApp.Domain.Entities.Reservation", b =>
                 {
                     b.Property<int>("Id")
@@ -30,8 +60,8 @@ namespace HotelApp.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<bool>("IsConfirmed")
-                        .HasColumnType("bit");
+                    b.Property<int>("BookingId")
+                        .HasColumnType("int");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
@@ -39,6 +69,9 @@ namespace HotelApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("RoomId");
+
+                    b.HasIndex("BookingId", "RoomId")
+                        .IsUnique();
 
                     b.ToTable("Reservations");
                 });
@@ -67,40 +100,63 @@ namespace HotelApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Room");
+                    b.ToTable("Rooms");
+                });
+
+            modelBuilder.Entity("HotelApp.Domain.Entities.Booking", b =>
+                {
+                    b.OwnsOne("HotelApp.Domain.Entities.DateRange", "TimeFrame", b1 =>
+                        {
+                            b1.Property<int>("BookingId")
+                                .HasColumnType("int");
+
+                            b1.Property<DateTime>("EndDate")
+                                .HasColumnType("datetime2")
+                                .HasColumnName("EndDate");
+
+                            b1.Property<DateTime>("StartDate")
+                                .HasColumnType("datetime2")
+                                .HasColumnName("StartDate");
+
+                            b1.HasKey("BookingId");
+
+                            b1.ToTable("Bookings");
+
+                            b1.WithOwner()
+                                .HasForeignKey("BookingId");
+                        });
+
+                    b.Navigation("TimeFrame")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HotelApp.Domain.Entities.Reservation", b =>
                 {
+                    b.HasOne("HotelApp.Domain.Entities.Booking", "Booking")
+                        .WithMany("Reservations")
+                        .HasForeignKey("BookingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HotelApp.Domain.Entities.Room", "Room")
-                        .WithMany()
+                        .WithMany("Reservations")
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.OwnsOne("HotelApp.Domain.Entities.DateRange", "TimeFrame", b1 =>
-                        {
-                            b1.Property<int>("ReservationId")
-                                .HasColumnType("int");
-
-                            b1.Property<DateTime>("EndDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<DateTime>("StartDate")
-                                .HasColumnType("datetime2");
-
-                            b1.HasKey("ReservationId");
-
-                            b1.ToTable("Reservations");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ReservationId");
-                        });
+                    b.Navigation("Booking");
 
                     b.Navigation("Room");
+                });
 
-                    b.Navigation("TimeFrame")
-                        .IsRequired();
+            modelBuilder.Entity("HotelApp.Domain.Entities.Booking", b =>
+                {
+                    b.Navigation("Reservations");
+                });
+
+            modelBuilder.Entity("HotelApp.Domain.Entities.Room", b =>
+                {
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

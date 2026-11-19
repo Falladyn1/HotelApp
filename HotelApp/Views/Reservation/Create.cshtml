@@ -1,0 +1,86 @@
+﻿@{
+    ViewData["Title"] = "Nowa rezerwacja";
+}
+
+<h1>Dodaj nową rezerwację</h1>
+<hr />
+
+<div class="container-fluid">
+    <form action="/Reservation/Create" method="post">
+
+        <div class="row mb-3">
+            <div class="col-md-5">
+                <label class="form-label" for="Booking_GuestFirstName">Imię</label>
+                <input class="form-control" type="text"
+                       id="Booking_GuestFirstName"
+                       name="Booking.GuestFirstName" />
+            </div>
+
+            <div class="col-md-7">
+                <label class="form-label" for="Booking_GuestLastName">Nazwisko</label>
+                <input class="form-control" type="text"
+                       id="Booking_GuestLastName"
+                       name="Booking.GuestLastName" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label" for="Booking_GuestEmail">Email</label>
+                <input class="form-control" type="text"
+                       id="Booking_GuestEmail"
+                       name="Booking.GuestEmail" />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label" for="Booking_GuestPhone">Telefon</label>
+                <input class="form-control" type="text"
+                       id="Booking_GuestPhone"
+                       name="Booking.GuestPhone" />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label class="form-label" for="Booking_TimeFrame_StartDate">Początek</label>
+                <input class="form-control" type="date"
+                       id="Booking_TimeFrame_StartDate"
+                       name="Booking.TimeFrame.StartDate"
+                       required />
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label" for="Booking_TimeFrame_EndDate">Koniec</label>
+                <input class="form-control" type="date"
+                       id="Booking_TimeFrame_EndDate"
+                       name="Booking.TimeFrame.EndDate"
+                       required />
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-12">
+                <label class="form-label" for="RoomId">Pokój</label>
+                <select class="form-control"
+                        id="RoomId"
+                        name="RoomId"
+                        required>
+                    <option value="">-- wybierz pokój --</option>
+
+                    @foreach (var room in ViewBag.Rooms)
+                    {
+                        <option value="@room.Id">
+                            @room.Name — @room.Capacity osób — @room.PricePerNight zł/noc
+                        </option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Dodaj rezerwację
+        </button>
+
+    </form>
+</div>
+

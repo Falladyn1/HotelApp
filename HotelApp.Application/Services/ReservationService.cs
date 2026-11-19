@@ -7,14 +7,20 @@ namespace HotelApp.Application.Services
 {
     public class ReservationService : IReservationService
     {
-        private readonly IReservationRepository _hotelReservationRepository;
-        public ReservationService(IReservationRepository hotelReservationRepository)
+        private readonly IReservationRepository _reservationRepository;
+        public ReservationService(IReservationRepository reservationRepository)
         {
-            _hotelReservationRepository = hotelReservationRepository;
+            _reservationRepository = reservationRepository;
         }
-        public async Task CreateReservation(Domain.Entities.Reservation reservation)
+
+        public async Task Create(Domain.Entities.Reservation reservation)
         {
-            await _hotelReservationRepository.CreateReservation(reservation);
+            await _reservationRepository.Create(reservation);
+        }
+
+        public async Task<List<Domain.Entities.Room>> GetRooms()
+        {
+            return await _reservationRepository.GetRooms();
         }
     }
 }

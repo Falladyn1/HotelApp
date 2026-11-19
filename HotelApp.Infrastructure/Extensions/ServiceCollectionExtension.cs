@@ -19,8 +19,9 @@ namespace HotelApp.Infrastructure.Extensions
                 configuration.GetConnectionString("HotelApp")));
 
             services.AddScoped<HotelRoomSeeder>();
-
             services.AddScoped<IReservationRepository, ReservationRepository>();
+            
+
         }
     }
 }

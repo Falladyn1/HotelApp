@@ -6,18 +6,22 @@ namespace HotelApp.MVC.Controllers
     public class ReservationController : Controller
     {
         private readonly IReservationService _reservationService;
-
         public ReservationController(IReservationService reservationService)
         {
             _reservationService = reservationService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateReservation(Domain.Entities.Reservation reservation)
+        public async Task<ActionResult> Create()
         {
-            await _reservationService.CreateReservation(reservation);
+            ViewBag.Rooms = await _reservationService.GetRooms();
+            return View();
+        }
 
-            return RedirectToAction(nameof(CreateReservation)); // to do 
+        [HttpPost]
+        public async Task<IActionResult> Create(Domain.Entities.Reservation reservation)
+        {
+            await _reservationService.Create(reservation);
+            return RedirectToAction(nameof(Create)); //to do
         }
     }
 }

@@ -20,7 +20,7 @@ namespace HotelApp.Infrastructure.Seeders
             var rooms = new List<Room>();
             for (int i = 0; i < numersOfRooms; i++)
             {
-                var room = new Domain.Entities.Room() { Name = $"Domek {i}", Capacity = 4, PricePerNight = 220, Description = "Domek 4 osobowy"};
+                var room = new Domain.Entities.Room() { Name = $"Domek {i+1}", Capacity = 4, PricePerNight = 220, Description = "Domek 4 osobowy"};
                 rooms.Add(room);
             }
             return rooms;

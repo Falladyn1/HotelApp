@@ -7,7 +7,8 @@ namespace HotelApp.Domain.Entities
     public class Booking
     {
         public int Id { get; set; }
-        public string GuestName { get; set; } = default!;
+        public string GuestFirstName { get; set; } = default!;
+        public string GuestLastName { get; set; } = default!;
         public string GuestEmail { get; set; } = default!;
         public string? GuestPhone { get; set; }
         public DateRange TimeFrame { get; set; } = default!;

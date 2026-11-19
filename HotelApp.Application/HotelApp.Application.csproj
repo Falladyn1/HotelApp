@@ -7,6 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="bin\Debug\net10.0\HotelApp.Application.deps.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="bin\Debug\net10.0\HotelApp.Application.dll" />
+    <None Include="bin\Debug\net10.0\HotelApp.Application.pdb" />
+    <None Include="bin\Debug\net10.0\HotelApp.Domain.dll" />
+    <None Include="bin\Debug\net10.0\HotelApp.Domain.pdb" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.15" />
   </ItemGroup>
 

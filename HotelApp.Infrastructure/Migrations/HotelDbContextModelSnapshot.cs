@@ -34,7 +34,11 @@ namespace HotelApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("GuestName")
+                    b.Property<string>("GuestFirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("GuestLastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

@@ -4,6 +4,7 @@ namespace HotelApp.Application.Services
 {
     public interface IReservationService
     {
-        Task CreateReservation(Reservation reservation);
+        Task Create(Reservation reservation);
+        Task<List<Room>> GetRooms();
     }
 }
